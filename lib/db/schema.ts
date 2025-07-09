@@ -1,3 +1,4 @@
+import { relations } from "drizzle-orm";
 import {
   pgTable,
   text,
@@ -65,3 +66,21 @@ export const verification = pgTable("verification", {
     () => /* @__PURE__ */ new Date()
   ),
 });
+
+export const profile = pgTable("profile", {
+  userId: text("user_id")
+    .references(() => user.id)
+    .notNull()
+    .primaryKey(),
+  bio: text("bio"),
+  githubUrl: text("github_url"),
+  imageUrl: text("image_url"),
+  updatedAt: timestamp().defaultNow(),
+});
+
+export const userProfileRelation = relations(profile, ({ one }) => ({
+  user: one(user, {
+    fields: [profile.userId],
+    references: [user.id],
+  }),
+}));
