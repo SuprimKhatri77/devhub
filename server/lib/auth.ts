@@ -4,6 +4,7 @@ import { db } from "../../lib/db";
 import { nextCookies } from "better-auth/next-js";
 import { sendEmail } from "./sendEmail";
 
+
 export const auth = betterAuth({
   database: drizzleAdapter(db, {
     provider: "pg",
@@ -41,4 +42,5 @@ export const auth = betterAuth({
     // },
   },
   plugins: [nextCookies()],
+    
 });
