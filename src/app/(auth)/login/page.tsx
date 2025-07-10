@@ -1,13 +1,22 @@
+"use client"
+
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import Link from 'next/link'
+import { FormState, SignIn } from '../../../../server/actions/signin'
+import { useActionState } from 'react'
 
 export default function LoginPage() {
+    const initialState: FormState = {
+        errors: {}
+    } as FormState
+
+    const [state, formAction, isPending] = useActionState<FormState, FormData>(SignIn, initialState)
     return (
         <section className="flex min-h-screen bg-zinc-50 px-4 py-16 md:py-32 dark:bg-transparent">
             <form
-                action=""
+                action={formAction}
                 className="bg-card m-auto h-fit w-full max-w-sm rounded-[calc(var(--radius)+.125rem)] border p-0.5 shadow-md dark:[--color-muted:var(--color-zinc-900)]">
                 <div className="p-8 pb-6">
                     <div>
@@ -91,13 +100,13 @@ export default function LoginPage() {
                             <Input
                                 type="password"
                                 required
-                                name="pwd"
+                                name="password"
                                 id="pwd"
                                 className="input sz-md variant-mixed"
                             />
                         </div>
 
-                        <Button className="w-full">Sign In</Button>
+                        <Button disabled={isPending} className="w-full">Sign In</Button>
                     </div>
                 </div>
 

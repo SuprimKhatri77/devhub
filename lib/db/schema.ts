@@ -74,7 +74,10 @@ export const profile = pgTable("profile", {
     .primaryKey(),
   bio: text("bio"),
   githubUrl: text("github_url"),
-  imageUrl: text("image_url"),
+  imageUrl: text("image_url").default(
+    "https://d3zng8i6n7.ufs.sh/f/JwSkmgRf87eYVyVpoGc72QWYFpRi06AjPv1X5MwHlLZhzKoG"
+  ),
+  techStack: text("tech_stack").array(),
   updatedAt: timestamp().defaultNow(),
 });
 

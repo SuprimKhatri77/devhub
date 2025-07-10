@@ -23,6 +23,7 @@ export const auth = betterAuth({
         html: `Click on the link to verify your email ${url}`,
       });
     },
+    autoSignInAfterVerification: true,
   },
   account: {
     accountLinking: {

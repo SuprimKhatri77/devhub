@@ -7,6 +7,7 @@ import Link from 'next/link'
 import SignInSocial from '../../../../server/lib/signInSocial'
 import { useActionState } from 'react'
 import { FormState, SignUp } from '../../../../server/actions/signup'
+import { toast } from 'sonner'
 
 export default function LoginPage() {
     const initialState: FormState = {
@@ -121,7 +122,7 @@ export default function LoginPage() {
                             />
                         </div>
 
-                        <Button className="w-full">Continue</Button>
+                        <Button disabled={isPending} className="w-full">Continue</Button>
                     </div>
                 </div>
 

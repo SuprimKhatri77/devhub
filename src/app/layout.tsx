@@ -2,6 +2,9 @@ import { NextSSRPlugin } from "@uploadthing/react/next-ssr-plugin";
 import { ourFileRouter } from "./api/uploadthing/core";
 
 
+import { Toaster } from "@/components/ui/sonner";
+
+
 
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
@@ -35,6 +38,7 @@ export default function RootLayout({
       >
         <NextSSRPlugin routerConfig={extractRouterConfig(ourFileRouter)} />
         {children}
+        <Toaster />
       </body>
     </html>
   );

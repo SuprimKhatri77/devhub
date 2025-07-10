@@ -1,9 +1,9 @@
-"use client";
+"use server";
 
 import z from "zod";
 import { auth } from "../lib/auth";
 import { redirect } from "next/navigation";
-import { APIError } from "better-auth";
+import { APIError } from "better-auth/api";
 
 export type FormState = {
   errors?: {
@@ -12,10 +12,11 @@ export type FormState = {
     email?: string[];
     password?: string[];
   };
+  message?: string;
 };
 
 export async function SignUp(prevState: FormState, formData: FormData) {
-  const data = Object.fromEntries(formData);
+  // const data = Object.fromEntries(formData);
 
   const userData = z.object({
     firstName: z
@@ -61,9 +62,15 @@ export async function SignUp(prevState: FormState, formData: FormData) {
   } catch (error) {
     if (error instanceof APIError) {
       switch (error.status) {
+        case "UNPROCESSABLE_ENTITY":
+          return { message: "User already exists." };
+        case "BAD_REQUEST":
+          return { message: "Invalid email" };
+        default:
+          return { message: "Something went wrong" };
       }
     }
+    throw error;
   }
-
-  return redirect("/");
+  redirect(`/sign-up/verify-email?email=${encodeURIComponent(email)}`);
 }
