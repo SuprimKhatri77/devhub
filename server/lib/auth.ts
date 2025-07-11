@@ -4,7 +4,6 @@ import { db } from "../../lib/db";
 import { nextCookies } from "better-auth/next-js";
 import { sendEmail } from "./sendEmail";
 
-
 export const auth = betterAuth({
   database: drizzleAdapter(db, {
     provider: "pg",
@@ -15,6 +14,14 @@ export const auth = betterAuth({
     minPasswordLength: 8,
     maxPasswordLength: 30,
     requireEmailVerification: true,
+    sendResetPassword: async ({ user, url, token }, request) => {
+      await sendEmail({
+        to: user.email,
+        subject: "Reset your password",
+        html: `Click on the link to reset your password ${url}`,
+      });
+    },
+    resetPasswordTokenExpiresIn: 3600,
   },
   emailVerification: {
     sendVerificationEmail: async ({ user, url, token }, request) => {
@@ -42,5 +49,4 @@ export const auth = betterAuth({
     // },
   },
   plugins: [nextCookies()],
-    
 });

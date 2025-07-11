@@ -33,7 +33,7 @@ export async function SignUp(prevState: FormState, formData: FormData) {
     password: z
       .string()
       .min(8, "Password must be more than or equal to 8 letters")
-      .max(20, "Password must less than 20 letters")
+      .max(128, "Password must less than 20 letters")
       .nonempty(),
   });
 

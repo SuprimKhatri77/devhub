@@ -10,13 +10,13 @@ export type FormState = {
     email?: string[];
     password?: string[];
   };
-  message?: string;
+  message?: string[];
 };
 
 export async function SignIn(prevState: FormState, formData: FormData) {
   const userData = z.object({
     email: z.string().email("Please enter a valid email!"),
-    password: z.string(),
+    password: z.string().min(8, "Password must be greater than 8 character"),
   });
 
   const validateFields = userData.safeParse({
@@ -43,11 +43,11 @@ export async function SignIn(prevState: FormState, formData: FormData) {
     if (error instanceof APIError) {
       switch (error.status) {
         case "UNPROCESSABLE_ENTITY":
-          return { errorMessage: "User already exists." };
+          return { message: ["User already exists."] };
         case "BAD_REQUEST":
-          return { errorMessage: "Invalid email." };
+          return { message: ["Invalid email."] };
         default:
-          return { errorMessage: "Something went wrong." };
+          return { message: [`${error.body?.message}`] };
       }
     }
     throw error;
